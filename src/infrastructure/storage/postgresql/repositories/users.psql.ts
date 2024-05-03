@@ -13,18 +13,24 @@ export class UsersPSQLRepository implements UsersRepo {
     });
   }
 
-  mapToModel(user: User): UserAttributes {
-    return {
+  mapToModel(user: User) {
+    const userAtt: UserAttributes = {
       id: parseInt(user.id),
       name: user.name,
       email: user.email,
       password: user.password,
       dateOfBirth: user.dateOfBirth
     };
+    return userAtt;
   }
 
-  getAll(filter: Filter): Promise<User[]> {
-    throw new Error('Method not implemented.');
+  async getAll(filter: Filter): Promise<User[]> {
+    const users = await UserModel.findAll();
+    let userRes: User[] = [];
+    if (users.length > 0) {
+      userRes = users.map(u => this.mapToEntity(u));
+    }
+    return userRes;
   }
 
   async getById(id: string): Promise<User | null> {
