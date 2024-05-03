@@ -1,0 +1,44 @@
+version: '3.7'
+
+networks:
+  project-network:
+    external: false
+services:
+  project-ex:
+    container_name: project-ex
+    image: service/project
+    build: .
+    environment:
+      NODE_ENV: development
+      DB_LOG_LEVEL: development
+      PORT: 3000
+      OPENAPI_FILE_PATH: ./oas3.yaml
+      OPENAPI_DOCS: /docs
+      OPENAPI_SPEC: /spec
+      OPENAPI_ENABLE_RESPONSE_VALIDATION: true
+      OPENAPI_ENABLE_REQUEST_VALIDATION: true
+      DATABASE: project
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_PORT: 5432
+      DATABASE_HOST: project-db
+    ports:
+      - 3000:3000
+    depends_on:
+      - project-db
+    networks:
+      - project-network
+
+  project-db:
+    container_name: project-db
+    image: postgres:14.4-alpine
+    environment:
+      POSTGRES_DB: project
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - project-network
