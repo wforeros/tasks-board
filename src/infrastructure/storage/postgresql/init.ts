@@ -11,8 +11,8 @@ const configModels = (sequelize: any, tableName: TableNames) => {
   };
 };
 
-export const setupModels = (sequelize: any) => {
+export const setupModels = async (sequelize: any) => {
   UserModel.init(userSchema, configModels(sequelize, TableNames.USER_TABLE));
-
+  await UserModel.sync();
   // Associations
 };

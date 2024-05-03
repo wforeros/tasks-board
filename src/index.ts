@@ -1,4 +1,6 @@
 import loadenv from '@infra/libs/env';
+import { setupModels } from '@infra/storage/postgresql/init';
+import { UserModel } from '@infra/storage/postgresql/models/user.model';
 
 const runApp = async () => {
   await loadenv();
@@ -14,11 +16,14 @@ const runApp = async () => {
         databasePort: process.env.DATABASE_PORT || '5432',
         databaseDriver: 'postgres'
       },
-      'default'
+      'default',
+      setupModels
     );
     const client = clients.get('default');
     if (client) {
       await isConnected(client);
+    } else {
+      console.error('Error while connecting to db');
     }
   };
   const startWebApp = async () => {
@@ -29,7 +34,7 @@ const runApp = async () => {
 
   try {
     await startWebApp();
-    //await startDatabase();
+    await startDatabase();
   } catch (error: unknown) {
     if (error instanceof Error) console.error(`ERROR : ${error.message} STACK : ${error.stack}`);
   }
