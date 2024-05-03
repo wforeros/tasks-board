@@ -4,19 +4,19 @@ info:
   description: Api Web
   version: 1.0.0
 servers:
-  - url: http://localhost:3001/v1
-    description: "Local server"
+  - url: http://localhost:3000/v1
+    description: 'Local server'
 tags:
   - name: users
     description: Users
 paths:
   # USERS
-  /users/get-all:
+  /users:
     get:
       tags:
         - users
       summary: get all users
-      description: http://localhost:3001/v1/users/get-all
+      description: Get users based on filters
       operationId: users:get-all
       parameters:
         - name: limit
@@ -33,33 +33,33 @@ paths:
           in: query
           schema:
             type: string
-            example: "xxxx@mail.com"
-          "allowReserved": true
+            example: 'xxxx@mail.com'
+          'allowReserved': true
       responses:
-        "200":
+        '200':
           description: result = drivers-api-schema
           content:
             application/json:
               schema:
-                $ref: "#/components/responses/list_response"
-        "400":
+                $ref: '#/components/responses/list_response'
+        '400':
           description: Not found users with provided id
           content:
             application/json:
               schema:
-                $ref: "#/components/responses/error"
-        "403":
-          description: "Forbiden"
+                $ref: '#/components/responses/error'
+        '403':
+          description: 'Forbiden'
           content:
             application/json:
               schema:
-                $ref: "#/components/responses/401_unauthorized"
-        "404":
+                $ref: '#/components/responses/401_unauthorized'
+        '404':
           description: Resource not found
           content:
             application/json:
               schema:
-                $ref: "#/components/responses/404_not_found"
+                $ref: '#/components/responses/404_not_found'
 components:
   securitySchemes:
     BearerAuth:
@@ -120,20 +120,20 @@ components:
       type: object
       properties:
         result:
-          $ref: "#/components/schemas/list_reponse"
+          $ref: '#/components/schemas/list_reponse'
         status:
           type: integer
           description: HTTP code status
   responses:
     response:
-      $ref: "#/components/schemas/api_response"
+      $ref: '#/components/schemas/api_response'
     list_response:
-      $ref: "#/components/schemas/api_list_reponse"
+      $ref: '#/components/schemas/api_list_reponse'
     error:
-      $ref: "#/components/schemas/api_error"
+      $ref: '#/components/schemas/api_error'
     401_unauthorized:
-      $ref: "#/components/schemas/api_error"
+      $ref: '#/components/schemas/api_error'
     403_forbidden:
-      $ref: "#/components/schemas/api_error"
+      $ref: '#/components/schemas/api_error'
     404_not_found:
-      $ref: "#/components/schemas/api_error"
+      $ref: '#/components/schemas/api_error'
