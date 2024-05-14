@@ -1,3 +1,5 @@
+import { Task } from './task.entity';
+
 export type IUser = {
   id?: string;
   name: string;
@@ -7,6 +9,8 @@ export type IUser = {
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
+
+  tasksData?: Task[];
 };
 
 export class User implements IUser {
@@ -18,6 +22,8 @@ export class User implements IUser {
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date;
+
+  tasksData!: Task[];
 
   constructor(user: IUser) {
     this.id = user.id;
