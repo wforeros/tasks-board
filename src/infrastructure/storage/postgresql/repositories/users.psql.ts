@@ -5,7 +5,7 @@ import { UserAttributes, UserModel } from '../models/user.model';
 export class UsersPSQLRepository implements UsersRepo {
   mapToEntity(user: UserAttributes): User {
     return new User({
-      id: user.id.toString(),
+      id: user.id ? user.id.toString() : undefined,
       name: user.name,
       email: user.email,
       password: user.password,
@@ -15,7 +15,7 @@ export class UsersPSQLRepository implements UsersRepo {
 
   mapToModel(user: User) {
     const userAtt: UserAttributes = {
-      id: parseInt(user.id),
+      id: user.id ? parseInt(user.id) : undefined,
       name: user.name,
       email: user.email,
       password: user.password,
@@ -25,7 +25,9 @@ export class UsersPSQLRepository implements UsersRepo {
   }
 
   async getAll(filter: Filter): Promise<User[]> {
-    const users = await UserModel.findAll();
+    const users = await UserModel.findAll({
+      where: filter
+    });
     let userRes: User[] = [];
     if (users.length > 0) {
       userRes = users.map(u => this.mapToEntity(u));

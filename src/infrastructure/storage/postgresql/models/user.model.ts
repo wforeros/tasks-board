@@ -1,7 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 
 export type UserAttributes = {
-  id: number;
+  id?: number;
   name: string;
   email: string;
   password: string;
