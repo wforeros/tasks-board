@@ -1,12 +1,12 @@
 version: '3.7'
 
 networks:
-  project-network:
+  tasks-board:
     external: false
 services:
-  project-ex:
-    container_name: project-ex
-    image: service/project
+  tasks-api:
+    container_name: tasks-api
+    image: service/tasks-api
     build: .
     environment:
       NODE_ENV: development
@@ -17,28 +17,28 @@ services:
       OPENAPI_SPEC: /spec
       OPENAPI_ENABLE_RESPONSE_VALIDATION: true
       OPENAPI_ENABLE_REQUEST_VALIDATION: true
-      DATABASE: project
+      DATABASE: tasks
       DATABASE_USER: postgres
       DATABASE_PASSWORD: postgres
       DATABASE_PORT: 5432
-      DATABASE_HOST: project-db
+      DATABASE_HOST: tasks-db
     ports:
       - 3000:3000
     depends_on:
-      - project-db
+      - tasks-db
     networks:
-      - project-network
+      - tasks-board
 
-  project-db:
-    container_name: project-db
+  tasks-db:
+    container_name: tasks-db
     image: postgres:14.4-alpine
     environment:
-      POSTGRES_DB: project
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tasks
     volumes:
       - ./db:/var/lib/postgresql/data
     ports:
       - 5432:5432
     networks:
-      - project-network
+      - tasks-board
