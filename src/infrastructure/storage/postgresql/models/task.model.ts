@@ -1,14 +1,15 @@
 import { DataTypes, Model } from 'sequelize';
-import { UserModel } from './user.model';
+import { UserModel, userAlias } from './user.model';
 
-export const authorData = 'authorData';
+export const tasksAlias = 'tasksData';
+
 export type TaskAttributes = {
   id?: number;
   title: string;
   status: string;
   description: string;
   authorId: number;
-  [authorData]?: UserModel;
+  [userAlias]?: UserModel;
   dueDate?: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -22,7 +23,7 @@ export class TaskModel extends Model<TaskAttributes> implements TaskAttributes {
   public status!: string;
   public authorId!: number;
   public dueDate!: Date;
-  public [authorData]!: UserModel;
+  public [userAlias]!: UserModel;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;

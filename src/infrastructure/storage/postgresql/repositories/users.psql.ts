@@ -1,6 +1,8 @@
 import { User } from 'domain/entities/user.entity';
-import { Filter, UsersRepo } from 'domain/repositories/users.repo';
+import { Filter, Options, UsersRepo } from 'domain/repositories/users.repo';
 import { UserAttributes, UserModel } from '../models/user.model';
+import { TaskModel, tasksAlias } from '../models/task.model';
+import { mapToEntity as mapTaskToEntity } from '../repositories/tasks.psql';
 
 export class UsersPSQLRepository implements UsersRepo {
   async getAll(filter: Filter): Promise<User[]> {
@@ -14,8 +16,14 @@ export class UsersPSQLRepository implements UsersRepo {
     return userRes;
   }
 
-  async getById(id: string): Promise<User | null> {
-    const user = await UserModel.findByPk(id);
+  async getById(id: string, options: Options): Promise<User | null> {
+    let include: any = [];
+    if (options.includeTasks) {
+      include = [tasksAlias];
+    }
+    const user = await UserModel.findByPk(id, {
+      include
+    });
     if (!user) return null;
     return mapToEntity(user);
   }
@@ -40,7 +48,7 @@ export class UsersPSQLRepository implements UsersRepo {
 }
 
 export function mapToEntity(user: UserAttributes): User {
-  return new User({
+  const userDOM = new User({
     id: user.id ? user.id.toString() : undefined,
     name: user.name,
     email: user.email,
@@ -50,6 +58,12 @@ export function mapToEntity(user: UserAttributes): User {
     updatedAt: user.updatedAt,
     deletedAt: user.deletedAt
   });
+  const tasks = user[tasksAlias];
+
+  if (tasks) {
+    userDOM.tasksData = tasks.map(task => mapTaskToEntity(task));
+  }
+  return userDOM;
 }
 
 export function mapToModel(user: User) {
