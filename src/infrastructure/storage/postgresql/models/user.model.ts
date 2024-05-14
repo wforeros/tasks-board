@@ -6,6 +6,9 @@ export type UserAttributes = {
   email: string;
   password: string;
   dateOfBirth: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
 };
 
 export class UserModel extends Model<UserAttributes> implements UserAttributes {
@@ -17,6 +20,7 @@ export class UserModel extends Model<UserAttributes> implements UserAttributes {
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+  public readonly deletedAt!: Date;
 }
 
 export const userSchema = {
@@ -41,5 +45,17 @@ export const userSchema = {
   dateOfBirth: {
     type: DataTypes.DATE,
     allowNull: false
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    allowNull: false
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    allowNull: false
+  },
+  deletedAt: {
+    type: DataTypes.DATE,
+    allowNull: true
   }
 };
