@@ -60,6 +60,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/responses/404_not_found'
+    post:
+      tags:
+        - 'users'
+      summary: 'Create a new user'
+      description: 'Create a new user'
+      operationId: 'users:create'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/users-create-one'
+      responses:
+        '200':
+          description: 'User created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/response'
+        '400':
+          description: 'Bad request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/error'
+        '401':
+          description: 'Unauthorized'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/401_unauthorized'
+        '404':
+          description: 'Resource not found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/404_not_found'
+
 components:
   securitySchemes:
     BearerAuth:
@@ -124,6 +161,30 @@ components:
         status:
           type: integer
           description: HTTP code status
+    users-create-one:
+      title: UserCreateOne
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        name:
+          type: string
+          description: User name
+          example: 'John Doe'
+        email:
+          type: string
+          description: User email
+          example: 'example@test.com'
+        date_of_birth:
+          type: string
+          description: User date of birth
+          example: '1990-01-01'
+        password:
+          type: string
+          description: User password
+          example: '123456'
+
   responses:
     response:
       $ref: '#/components/schemas/api_response'
