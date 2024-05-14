@@ -96,6 +96,149 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/responses/404_not_found'
+        '500':
+          description: 'Internal server error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/error'
+  /users/{id}:
+    get:
+      tags:
+        - users
+      summary: get user by id
+      description: Get user by id
+      operationId: users:get-one
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: '1'
+        - name: includeTasks
+          in: query
+          schema:
+            type: boolean
+            example: true
+      responses:
+        '200':
+          description: result = drivers-api-schema
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/response'
+        '400':
+          description: Not found users with provided id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/error'
+        '403':
+          description: 'Forbiden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/401_unauthorized'
+        '404':
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/404_not_found'
+  /tasks:
+    get:
+      tags:
+        - tasks
+      summary: get all tasks
+      description: Get tasks based on filters
+      operationId: tasks:get-all
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: number
+            example: 0
+        - name: offset
+          in: query
+          schema:
+            type: number
+            example: 0
+        - name: email
+          in: query
+          schema:
+            type: string
+            example: 'mail@example.com'
+      responses:
+        200:
+          description: result = drivers-api-schema
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/list_response'
+    post:
+      tags:
+        - 'tasks'
+      summary: Create a new task
+      description: Create a new task
+      operationId: tasks:create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/tasks-create-one'
+      responses:
+        '200':
+          description: 'Task created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/response'
+  /tasks/{id}:
+    get:
+      tags:
+        - tasks
+      summary: get task by id
+      description: Get task by id
+      operationId: tasks:get-one
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            example: '1'
+        - name: includeAuthor
+          in: query
+          schema:
+            type: boolean
+            example: true
+
+      responses:
+        200:
+          description: result = drivers-api-schema
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/response'
+        400:
+          description: Not found task with provided id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/error'
+        403:
+          description: 'Forbiden'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/401_unauthorized'
+        404:
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/responses/404_not_found'
 
 components:
   securitySchemes:
@@ -184,6 +327,36 @@ components:
           type: string
           description: User password
           example: '123456'
+
+    ## TASKS
+    tasks-create-one:
+      title: TaskCreateOne
+      required:
+        - title
+        - description
+        - author_id
+      type: object
+      properties:
+        title:
+          type: string
+          description: Task title
+          example: 'Task 1'
+        description:
+          type: string
+          description: Task description
+          example: 'Task description'
+        author_id:
+          type: string
+          description: User id
+          example: '1'
+        status:
+          type: string
+          description: Task status
+          example: 'open'
+        due_date:
+          type: string
+          description: Task due date
+          example: '2021-01-01'
 
   responses:
     response:
