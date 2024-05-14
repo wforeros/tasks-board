@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { ApiError } from '@domain/errors/api-error';
 import { HTTPCodesEnum } from '@domain/errors/enums/error.enum';
+import { sendErrorResponse } from '../utils/response';
 
 /**
  *
@@ -96,5 +97,5 @@ export const errorHandler = (err: any, req: Request, res: Response, next: NextFu
   let { httpCode, error } = errorHandlerFnc(err);
   if (!httpCode) httpCode = HTTPCodesEnum.INTERNAL_SERVER_ERROR;
   if (!error) error = 'Internal server error';
-  res.status(httpCode).json(error);
+  sendErrorResponse(res, error, httpCode);
 };
