@@ -4,6 +4,9 @@ export type IUser = {
   email: string;
   password: string;
   dateOfBirth: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
 };
 
 export class User implements IUser {
@@ -12,6 +15,9 @@ export class User implements IUser {
   email: string;
   password: string;
   dateOfBirth: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
 
   constructor(user: IUser) {
     this.id = user.id;
@@ -19,6 +25,9 @@ export class User implements IUser {
     this.email = user.email;
     this.password = user.password;
     this.dateOfBirth = user.dateOfBirth;
+    this.createdAt = user.createdAt;
+    this.updatedAt = user.updatedAt;
+    this.deletedAt = user.deletedAt;
   }
 
   toDto() {
@@ -27,7 +36,10 @@ export class User implements IUser {
       name: this.name,
       email: this.email,
       password: this.password,
-      date_of_birth: this.dateOfBirth
+      date_of_birth: this.dateOfBirth,
+      created_at: this.createdAt,
+      updated_at: this.updatedAt,
+      deleted_at: this.deletedAt
     };
   }
 
@@ -37,7 +49,10 @@ export class User implements IUser {
       name: userApi['name'],
       email: userApi['email'],
       password: userApi['password'],
-      dateOfBirth: userApi['date_of_birth']
+      dateOfBirth: userApi['date_of_birth'],
+      createdAt: userApi['created_at'],
+      updatedAt: userApi['updated_at'],
+      deletedAt: userApi['deleted_at']
     });
     return user;
   }
