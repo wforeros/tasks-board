@@ -3,6 +3,7 @@ import { User } from 'domain/entities/user.entity';
 export type Filter = {
   name?: string;
   email?: string;
+  dateOfBirth?: Date;
 };
 
 export type UsersRepo = {
