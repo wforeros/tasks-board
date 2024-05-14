@@ -1,9 +1,8 @@
-import { TasksPsqlImpl } from '@infra/storage/postgresql/repositories/tasks.psql';
 import { build as buildCreateOne } from './create-one';
 import { build as buildGetOne } from './get-one';
+import { tasksPsqlImpl } from '@domain/repositories';
 
-const tasksRepo = new TasksPsqlImpl();
-const createOne = buildCreateOne({ tasksRepo });
-const getOne = buildGetOne({ tasksRepo });
+const createOne = buildCreateOne({ tasksRepo: tasksPsqlImpl });
+const getOne = buildGetOne({ tasksRepo: tasksPsqlImpl });
 
 export { createOne, getOne };
